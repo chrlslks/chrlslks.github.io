@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Undangan</title>
+    <script>
+        function setMode(mode) {
+            document.querySelector(".sun-logo").classList.toggle("animate-sun");
+            document.querySelector(".moon-logo").classList.toggle("animate-moon");
+            document.querySelector("section").classList.toggle("dark");  
+
+            setCookie("mode", mode, 365); 
+        }
+
+        function setCookie(name, value, daysToLive) {
+            const date = new Date();
+            date.setTime(date.getTime() + daysToLive * 24 * 60 * 60 * 1000);
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = `${name}=${value};${expires}; path=/`;
+        }
+
+        function getCookie(name) {
+            const cookieValue = document.cookie.match('(^|[^;]+)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return cookieValue ? cookieValue.pop() : null;
+        }
+
+        function deleteCookie(name) {
+            setCookie(name, null, -1);
+        }
+
+        function updateTimer() {
+            // Get the current time
+            const currentTime = new Date().getTime();
+
+            // Calculate the remaining time
+            const remainingTime = countdownTarget - currentTime;
+
+            // Calculate minutes and seconds
+            const months = Math.floor(remainingTime % (1000 * 60 * 60 * 24 * 30 * 12) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor(remainingTime % (1000 * 60 * 60 * 24 * 30) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            // Display the countdown
+            document.getElementById('timer').innerHTML = `${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+
+            // Check if the countdown has reached zero
+            if (remainingTime <= 0) {
+                document.getElementById('timer').innerHTML = 'Countdown expired!';
+                // You can perform any additional actions here when the countdown reaches zero
+            }
+        }
+    </script>
+    <script src="https://kit.fontawesome.com/e10fba1757.js" crossorigin="anonymous"></script>
+    <style>
+        :root{
+            --dark-mode: #333d45;
+            --light-mode: #c2c5cd;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            height: 300vh;
+            box-sizing: border-box;
+
+        }
+        section{
+            height: 100vh;
+            margin: 0 auto;
+            width: 500px;
+            transition: color 1s;
+            background-color: var(--light-mode
+            );
+            color: var(--dark-mode);
+            transition: background-color 1s;
+        }
+
+        .dark{
+            background-color: var(--dark-mode);
+            color: var(--light-mode);
+        }
+
+        .darkmode-container{
+            margin: auto;
+            width: 250px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sun, .moon{
+            font-size: 5rem;
+            width: fit-content;
+            height: fit-content;
+            position: absolute;
+        }
+        .sun-logo{
+            opacity: 0;
+            transform: fadey(1s);
+            transition: all 1s ease-out;
+        }
+        .moon-logo{
+            opacity: 1;
+            transition: all 1s ease-out;
+        }
+        .animate-moon{
+            opacity: 0;
+        }
+        .animate-sun{
+            opacity: 1;
+        }
+        .animate-sun path{
+        fill: white;
+        }
+        .animate-moon path{
+        fill: white;
+        }
+        div.container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .closing>p{
+            font-size: 50px;
+        }
+
+        /* responsive */
+        @media screen and (max-width: 600px){
+            section{
+                width: 100%;
+            }
+        }
+        /* desktop responsive
+        @media screen and (min-width: 600px){
+            section{
+                width: 100%;
+            }
+        } */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="cover">
+            <p>
+                <h1>Let's Celebrate!</h1>
+                <h4>You are invited to</h4>
+                <img src="images/dapa.jpeg" alt="">
+                <h2>Daffaa's 17th Birthday</h2>
+                <div class="darkmode-container">
+                    <div class="sun sun-logo">
+                       <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="moon moon-logo">
+                       <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+            </p>
+        </section>
+        <section class="invitation">
+            <p>
+                <h1>📍Daffaa's House, KM12</h1>
+                <h1>🕛19:00</h1>
+            </p>
+            <p>
+                <h1>Actiivity List:</h1>
+                <h3>Indoor Party</h3>
+                <h3>Fun Games and activities</h3>
+                <h3>Backyard water baloon fight</h3>
+            </p>
+        </section>
+        <section class="closing">
+            <p>
+                <h1>See You In...</h1>
+            </p>
+            <div class="countdown-container">
+                <div id="timer"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Darkmode Cookie
+        let modecookie = getCookie("mode");
+        if (modecookie){
+            setMode(modecookie);
+        }
+
+        document.querySelector(".darkmode-container").addEventListener("click", ()=>{
+            if (document.querySelector(".darkmode-container").classList.contains("dark")){
+                setMode("light");
+            } else{
+                setMode("dark");
+            }
+        })
+
+
+
+    </script>
+    <script>
+        // Set the countdown target time (in milliseconds)
+        const countdownTarget = new Date(2024,4,16,7).getTime(); 
+
+        // Update the timer every second
+        setInterval(updateTimer, 1000);
+
+        // Initial update
+        updateTimer();
+    </script>
+</body>
+</html>
